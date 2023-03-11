@@ -1,0 +1,23 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xacmebuckets-aws
+  labels:
+    provider: aws
+spec:
+  compositeTypeRef:
+    apiVersion: storage.example.com/v1alpha1
+    kind: XAcmeBucket
+  resources:
+  - name: bucket1
+    base:
+      apiVersion: s3.aws.crossplane.io/v1beta1
+      kind: Bucket
+      spec:
+        forProvider:
+          acl: public-read-write
+          locationConstraint: us-east-1
+    patches:
+    - type: FromCompositeFieldPath
+      fromFieldPath: "spec.parameters.bucketName"
+      toFieldPath: "metadata.name"

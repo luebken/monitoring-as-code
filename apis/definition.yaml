@@ -1,0 +1,33 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xacmebuckets.storage.example.com
+spec:
+  group: storage.example.com
+  names:
+    kind: XAcmeBucket
+    plural: xacmebuckets
+  claimNames:
+    kind: AcmeBucket
+    plural: acmebuckets
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                properties:
+                  bucketName:
+                    description: The Bucket name
+                    type: string
+                required:
+                - bucketName
+            required:
+            - parameters
