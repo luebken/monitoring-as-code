@@ -1,7 +1,7 @@
 apiVersion: oss.grafana.crossplane.io/v1alpha1
 kind: Dashboard
 metadata:
-  name: cloud-stack-dashboard
+  name: blank-dashboard
 spec:
   forProvider:
     configJson: |

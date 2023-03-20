@@ -1,0 +1,19 @@
+apiVersion: oss.grafana.crossplane.io/v1alpha1
+kind: DataSource
+metadata:
+  name: aws-cloudwatch-datasource
+spec:
+  forProvider:
+    name: aws-cloudwatch-datasource
+    type: cloudwatch
+    jsonDataEncoded: |
+      {
+          "defaultRegion": "us-east-1",
+          "authType": "keys"
+      }
+    secureJsonDataEncodedSecretRef:
+      name: aws-cloudwatch-datasource-creds
+      namespace: crossplane-system
+      key: credentials
+  providerConfigRef:
+    name: grafana-cloud-instance-provider

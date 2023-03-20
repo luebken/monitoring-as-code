@@ -36,13 +36,34 @@ open https://<slug>.grafana.net/
 kubectl apply -f grafana/4.api-key-from-stack.yaml
 # Configure provider with the generated secret:
 kubectl apply -f grafana/5.grafana-instance-provider-config.yaml
-# Create dashboard
-kubectl apply -f grafana/6.dashboard.yaml
 
-kubectl get dashboard.oss.grafana.crossplane.io/cloud-stack-dashboard -o yaml | yq .status.atProvider.url
+# Create a blank dashboard
+kubectl apply -f grafana/6.blank-dashboard.yaml
+kubectl get dashboard.oss.grafana.crossplane.io/blank-dashboard -o yaml | yq .status.atProvider.url
+
+#
+# --- AWS dashboard
+#
+# https://grafana.com/grafana/dashboards/575-aws-s3/
+
+# Create a secret for cloudwatch
+# accessKey: ($ aws configure get aws_access_key_id)
+# secretKey: $(aws configure get aws_secret_access_key):
+kubectl apply -f grafana/7.aws-cloudwatch-secret.yaml
+
+# Create a AWS Cloudwatch datasource
+# https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/data_source
+# https://marketplace.upbound.io/providers/grafana/provider-grafana/v0.3.0/resources/oss.grafana.crossplane.io/DataSource/v1alpha1
+# check under https://<slug>.grafana.net/datasources/
+kubectl apply -f grafana/8.aws-cloudwatch-datasource.yaml
+
+# Create an AWS S3 dashboard
+# https://grafana.com/grafana/dashboards/575-aws-s3/
+kubectl apply -f grafana/9.aws-s3-dashboard.yaml
+kubectl get dashboard.oss.grafana.crossplane.io/aws-s3-dashboard -o yaml | yq .status.atProvider.url
 ```
 
-## Datadog
+## (WIP) Datadog
 https://github.com/crossplane-contrib/provider-jet-datadog/
 
 https://app.datadoghq.eu/organization-settings/api-keys
