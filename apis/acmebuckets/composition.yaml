@@ -1,7 +1,7 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: xacmebuckets-aws
+  name: xacmebuckets-aws-grafana
   labels:
     provider: aws
 spec:
@@ -9,7 +9,7 @@ spec:
     apiVersion: storage.example.com/v1alpha1
     kind: XAcmeBucket
   resources:
-  - name: bucket1
+  - name: bucket
     base:
       apiVersion: s3.aws.crossplane.io/v1beta1
       kind: Bucket
@@ -21,3 +21,14 @@ spec:
     - type: FromCompositeFieldPath
       fromFieldPath: "spec.parameters.bucketName"
       toFieldPath: "metadata.name"
+  - name: dashboard
+    base:
+      apiVersion: oss.grafana.crossplane.io/v1alpha1
+      kind: Dashboard
+      spec:
+        spec:
+          forProvider:
+            configJson: |
+              {
+              // Grafana dashboard definition
+              }
